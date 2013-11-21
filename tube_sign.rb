@@ -19,57 +19,54 @@ end
 
 get '/image.png' do
 
-date = params[:date] || nil
-time = params[:time] || nil
-text = params[:text].values.delete_if {|a|a.empty?}
+  text = ['Thom','is blamed'] + params[:text].values.delete_if {|a|a.empty?}
 
-filename = File.join("public/cache", Digest::MD5.hexdigest(params.to_s)+".png")
+  filename = File.join("public/cache", Digest::MD5.hexdigest(params.to_s)+".png")
 
-unless File.exists? filename
-  # create image
-  img = ImageList.new("tube_sign.png") 
-  draw = Draw.new
+  reenie_beanie ='fonts/Reenie_Beanie/ReenieBeanie.ttf'
+  gloria = 'fonts/Gloria_Hallelujah/GloriaHallelujah.ttf'
+  pointsize_base = 50
 
-  draw.annotate(img, 0,0, 237, 285, date){
-    self.font = 'fonts/Reenie_Beanie/ReenieBeanie.ttf'
-    self.fill = 'black'
-    self.stroke = 'transparent'
-    self.pointsize = 40
-    self.rotation = 4
-  } unless date.empty?
-
-
-  draw.annotate(img, 0,0, 273, 330, time){
-    self.font = 'fonts/Reenie_Beanie/ReenieBeanie.ttf'
-    self.fill = 'black'
-    self.stroke = 'transparent'
-    self.pointsize = 30
-    self.rotation = 3
-  } unless time.empty?
-
-  y = 344
-  text.each_with_index do | t, i |
-    pointsize = 32 + [*-1..4].sample
-    pointsize = 38 if i == 0
-    y = y+36
-    draw.annotate(img, 0,0,160,y, t) {
-      self.font = 'fonts/Reenie_Beanie/ReenieBeanie.ttf'
-      self.fill = 'black'
-      self.stroke = 'transparent'
-      self.pointsize = pointsize
-      self.rotation = [*-2..1].sample
-    }
-  end
-  # save image
-  img.write(filename) do
-    self.compression = Magick::ZipCompression
-  end
+  unless File.exists? filename
+    # create image
+    img = ImageList.new("thom_is_blamed.png") 
+    draw = Draw.new
   
-else
+    y = 250
 
-  # load image
-  img = ImageList.new(filename)
-end
+    text.each_with_index do | t, i |
+      pointsize = if i == 0 
+        pointsize_base + 15
+      else
+        pointsize_base + [*-2..8].sample
+      end
+
+      y = y+60
+      if i == 0
+        draw.annotate(img,0,0,100 -4, y-4, t) {
+          self.font = reenie_beanie
+          self.fill = '#F53842AA'
+          self.stroke = 'transparent'
+          self.pointsize = pointsize
+          self.rotation = [*-5..1].sample
+        } 
+      end
+      draw.annotate(img,0,0,100 + [*-4..4].sample, y, t) {
+        self.font = reenie_beanie
+        self.fill = '#eeea'
+        self.stroke = 'transparent'
+        self.pointsize = pointsize
+        self.rotation = [*-5..1].sample
+      }
+    end
+    # save image
+    img.write(filename) do
+      self.compression = Magick::ZipCompression
+    end
+  else
+    # load image
+    img = ImageList.new(filename)
+  end
 
   #serve image
   content_type 'image/png'
