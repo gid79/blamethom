@@ -53,7 +53,7 @@ get '/image.png' do
       end
       draw.annotate(img,0,0,100 + [*-4..4].sample, y, t) {
         self.font = reenie_beanie
-        self.fill = '#eeea'
+        self.fill = '#111a'
         self.stroke = 'transparent'
         self.pointsize = pointsize
         self.rotation = [*-5..1].sample
