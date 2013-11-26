@@ -5,7 +5,14 @@
 <p>Please note - images are only saved on the server for a very short time, so please remember to "right click and save as" if you want to keep it.</p>
 <form method="get" action="/image.png">
     <ul>
-        <li><label for="text[first]">1</label><input type="text" name="text[first]" /></li>
+        <li><label for="text[who]">Blame</label>
+          <select name="who">
+            <% @names.each do |name| %>
+            <option name="<%=name%>"><%=name%></option>
+            <% end %>
+          </select>
+        </li>        
+        <li><label for="text[first]">for</label><input type="text" name="text[first]" /></li>
         <li><label for="text[second]">2</label><input type="text" name="text[second]" /></li>
         <li><label for="text[third]">3</label><input type="text" name="text[third]" /></li>
         <li><label for="text[fourth]">4</label><input type="text" name="text[fourth]" /></li>
