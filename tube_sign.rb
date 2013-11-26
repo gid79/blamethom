@@ -2,7 +2,7 @@ require 'sinatra'
 require 'RMagick'
 include Magick
 
-valid_names = ['Any one','Everyone','Thom','Gareth','Dave','Dan','Andy','Steve']
+valid_names = ['Any one','Everyone','Thom','Gareth','Dave','Dan','Andy','Steve','David S','Vip', 'Paul']
 get '/' do
   @names = valid_names
   erb :index
